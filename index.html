@@ -22,6 +22,17 @@
     --text: #e8e8f0;
     --text-dim: #6b6b8a;
     --glow: 0 0 20px rgba(0,229,255,0.3);
+    --glow2: 0 0 20px rgba(255,107,53,0.3);
+    --glow3: 0 0 20px rgba(124,58,237,0.3);
+  }
+
+  .light-mode {
+    --bg: #f0f4f8;
+    --panel: #ffffff;
+    --card: #e8edf2;
+    --border: #c8d0da;
+    --text: #1a1a2e;
+    --text-dim: #6b7280;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -34,45 +45,76 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    padding: 16px;
     background-image:
       radial-gradient(ellipse at 20% 20%, rgba(124,58,237,0.08) 0%, transparent 50%),
       radial-gradient(ellipse at 80% 80%, rgba(0,229,255,0.06) 0%, transparent 50%);
+    transition: background 0.3s;
+  }
+
+  /* HEADER */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: 16px;
   }
 
   h1 {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     font-weight: 900;
-    letter-spacing: 2px;
-    margin-bottom: 24px;
     background: linear-gradient(135deg, var(--accent), var(--accent3));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-align: center;
   }
 
+  .theme-btn {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+  }
+
+  .theme-btn:hover { border-color: var(--accent); box-shadow: var(--glow); }
+
+  /* TABS */
   .tabs {
     display: flex;
-    gap: 8px;
-    margin-bottom: 20px;
+    gap: 6px;
+    margin-bottom: 16px;
     background: var(--panel);
-    padding: 6px;
+    padding: 5px;
     border-radius: 14px;
     border: 1px solid var(--border);
+    width: 100%;
+    max-width: 900px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
   }
 
   .tab {
-    padding: 10px 24px;
+    padding: 8px 14px;
     border: none;
     border-radius: 10px;
     cursor: pointer;
     font-family: 'Cairo', Arial, sans-serif;
-    font-size: 0.95rem;
+    font-size: 0.82rem;
     font-weight: 600;
     transition: all 0.3s;
     background: transparent;
     color: var(--text-dim);
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .tab.active {
@@ -84,6 +126,7 @@
   .section { display: none; width: 100%; max-width: 900px; }
   .section.active { display: block; }
 
+  /* ===== CALCULATOR ===== */
   .calc-wrapper {
     background: var(--card);
     border: 1px solid var(--border);
@@ -94,22 +137,25 @@
 
   .display {
     background: var(--panel);
-    padding: 24px 20px 16px;
+    padding: 20px 16px 14px;
     text-align: left;
     border-bottom: 1px solid var(--border);
   }
 
   .display-history {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     color: var(--text-dim);
-    min-height: 22px;
-    margin-bottom: 8px;
+    min-height: 20px;
+    margin-bottom: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .display-main {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 2.4rem;
+    font-size: 2.2rem;
     color: var(--accent);
     text-shadow: var(--glow);
     overflow: hidden;
@@ -117,6 +163,7 @@
     white-space: nowrap;
     direction: ltr;
     text-align: right;
+    transition: font-size 0.2s;
   }
 
   .buttons {
@@ -127,11 +174,11 @@
   }
 
   .btn {
-    padding: 18px 8px;
+    padding: 16px 6px;
     border: none;
     cursor: pointer;
     font-family: 'Share Tech Mono', monospace;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 600;
     transition: all 0.15s;
     background: var(--card);
@@ -140,55 +187,76 @@
     overflow: hidden;
   }
 
-  .btn::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: white;
-    opacity: 0;
-    transition: opacity 0.15s;
-  }
-
+  .btn::after { content:''; position:absolute; inset:0; background:white; opacity:0; transition:opacity 0.15s; }
   .btn:active::after { opacity: 0.08; }
   .btn:hover { background: #1e1e2e; }
   .btn.op { color: var(--accent); }
-  .btn.fn { color: #a78bfa; font-size: 0.85rem; }
-  .btn.eq {
-    background: linear-gradient(135deg, var(--accent3), var(--accent));
-    color: white;
-    box-shadow: var(--glow);
-    font-size: 1.4rem;
-  }
+  .btn.fn { color: #a78bfa; font-size: 0.8rem; }
+  .btn.eq { background: linear-gradient(135deg, var(--accent3), var(--accent)); color:white; box-shadow:var(--glow); font-size:1.3rem; }
   .btn.eq:hover { filter: brightness(1.15); }
   .btn.clear { color: var(--accent2); }
   .btn.zero { grid-column: span 2; }
 
+  /* ===== HISTORY ===== */
+  .history-list {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 12px;
+  }
+
+  .history-item {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    direction: ltr;
+  }
+
+  .history-item:hover { border-color: var(--accent); }
+  .history-expr { color: var(--text-dim); font-size: 0.85rem; font-family: 'Share Tech Mono', monospace; }
+  .history-result { color: var(--accent); font-weight: 700; font-family: 'Share Tech Mono', monospace; }
+
+  /* ===== GRAPH ===== */
   .graph-wrapper {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 20px;
-    padding: 24px;
+    padding: 20px;
     box-shadow: 0 20px 60px rgba(0,0,0,0.5);
   }
 
-  .graph-controls {
+  .graph-functions { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+
+  .func-row {
     display: flex;
-    gap: 12px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
+    gap: 8px;
     align-items: center;
+  }
+
+  .func-color {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    cursor: pointer;
+    flex-shrink: 0;
   }
 
   .graph-input {
     flex: 1;
-    min-width: 200px;
     background: var(--panel);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 12px 16px;
+    padding: 10px 14px;
     color: var(--text);
     font-family: 'Share Tech Mono', monospace;
-    font-size: 1rem;
+    font-size: 0.95rem;
     outline: none;
     direction: ltr;
     transition: border-color 0.3s;
@@ -196,37 +264,67 @@
 
   .graph-input:focus { border-color: var(--accent); box-shadow: var(--glow); }
 
-  .range-controls {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    flex-wrap: wrap;
+  .add-func-btn {
+    padding: 8px 14px;
+    background: var(--panel);
+    border: 1px solid var(--accent3);
+    border-radius: 10px;
+    color: var(--accent3);
+    cursor: pointer;
+    font-family: 'Cairo', Arial, sans-serif;
+    font-weight: 700;
+    transition: all 0.2s;
   }
 
+  .add-func-btn:hover { background: var(--accent3); color: white; }
+
+  .remove-func-btn {
+    background: transparent;
+    border: 1px solid var(--accent2);
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    color: var(--accent2);
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .graph-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .range-controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
   .range-input {
-    width: 70px;
+    width: 65px;
     background: var(--panel);
     border: 1px solid var(--border);
     border-radius: 8px;
-    padding: 10px 8px;
+    padding: 8px 6px;
     color: var(--text);
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     outline: none;
     text-align: center;
     direction: ltr;
   }
 
-  .range-input:focus { border-color: var(--accent); }
-
   .graph-btn {
-    padding: 12px 24px;
+    padding: 10px 20px;
     background: linear-gradient(135deg, var(--accent3), var(--accent));
     border: none;
     border-radius: 10px;
     color: white;
     font-family: 'Cairo', Arial, sans-serif;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 700;
     cursor: pointer;
     box-shadow: var(--glow);
@@ -236,49 +334,348 @@
 
   .graph-btn:hover { filter: brightness(1.15); }
 
+  .export-btn {
+    padding: 10px 16px;
+    background: var(--panel);
+    border: 1px solid var(--accent2);
+    border-radius: 10px;
+    color: var(--accent2);
+    font-family: 'Cairo', Arial, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .export-btn:hover { background: var(--accent2); color: white; }
+
   .canvas-wrap {
     background: var(--panel);
     border-radius: 14px;
     border: 1px solid var(--border);
-    padding: 16px;
+    padding: 14px;
+    margin-bottom: 12px;
   }
 
-  canvas { border-radius: 8px; }
-
-  .presets {
-    display: flex;
-    gap: 8px;
-    margin-top: 14px;
-    flex-wrap: wrap;
-  }
+  .presets { display: flex; gap: 6px; flex-wrap: wrap; }
 
   .preset-btn {
-    padding: 6px 14px;
+    padding: 5px 12px;
     background: var(--panel);
     border: 1px solid var(--border);
     border-radius: 20px;
     color: var(--text-dim);
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     cursor: pointer;
     transition: all 0.2s;
   }
 
   .preset-btn:hover { border-color: var(--accent); color: var(--accent); }
+  label { color: var(--text-dim); font-size: 0.82rem; }
+  .error-msg { color: var(--accent2); font-size: 0.82rem; margin-top: 6px; min-height: 18px; }
 
-  label { color: var(--text-dim); font-size: 0.85rem; }
-  .error-msg { color: var(--accent2); font-size: 0.85rem; margin-top: 8px; min-height: 20px; }
+  /* ===== STATISTICS ===== */
+  .stat-wrapper {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  .stat-input {
+    width: 100%;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--text);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.95rem;
+    outline: none;
+    direction: ltr;
+    margin-bottom: 12px;
+  }
+
+  .stat-input:focus { border-color: var(--accent); }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .stat-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+
+  .stat-card:hover { border-color: var(--accent); }
+  .stat-label { color: var(--text-dim); font-size: 0.78rem; margin-bottom: 6px; }
+  .stat-value { color: var(--accent); font-family: 'Share Tech Mono', monospace; font-size: 1.1rem; font-weight: 700; }
+
+  /* ===== UNIT CONVERTER ===== */
+  .converter-wrapper {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  .converter-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .conv-tab {
+    padding: 7px 14px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: 'Cairo', Arial, sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    background: var(--panel);
+    color: var(--text-dim);
+    transition: all 0.2s;
+  }
+
+  .conv-tab.active { background: var(--accent3); border-color: var(--accent3); color: white; }
+
+  .conv-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+
+  .conv-input {
+    flex: 1;
+    min-width: 120px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--text);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1rem;
+    outline: none;
+    direction: ltr;
+    transition: border-color 0.3s;
+  }
+
+  .conv-input:focus { border-color: var(--accent); }
+
+  .conv-select {
+    flex: 1;
+    min-width: 120px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--text);
+    font-family: 'Cairo', Arial, sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .conv-result {
+    background: var(--panel);
+    border: 1px solid var(--accent);
+    border-radius: 14px;
+    padding: 18px;
+    text-align: center;
+    box-shadow: var(--glow);
+  }
+
+  .conv-result-value {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.8rem;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .conv-result-label { color: var(--text-dim); font-size: 0.85rem; margin-top: 6px; }
+
+  /* ===== MATRIX ===== */
+  .matrix-wrapper {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  .matrix-size {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+
+  .size-input {
+    width: 60px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px;
+    color: var(--text);
+    font-family: 'Share Tech Mono', monospace;
+    text-align: center;
+    outline: none;
+  }
+
+  .matrix-grid {
+    display: inline-grid;
+    gap: 4px;
+    margin-bottom: 14px;
+  }
+
+  .matrix-cell {
+    width: 55px;
+    height: 42px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'Share Tech Mono', monospace;
+    text-align: center;
+    outline: none;
+    font-size: 0.9rem;
+    transition: border-color 0.2s;
+  }
+
+  .matrix-cell:focus { border-color: var(--accent); }
+
+  .matrix-ops { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+
+  .matrix-btn {
+    padding: 9px 16px;
+    background: var(--panel);
+    border: 1px solid var(--accent3);
+    border-radius: 10px;
+    color: var(--accent3);
+    font-family: 'Cairo', Arial, sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .matrix-btn:hover { background: var(--accent3); color: white; }
+
+  .matrix-result {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--accent);
+    min-height: 60px;
+    direction: ltr;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  /* ===== CURRENCY ===== */
+  .currency-wrapper {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  .currency-note {
+    background: var(--panel);
+    border: 1px solid var(--accent2);
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: var(--accent2);
+    font-size: 0.82rem;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+
+  /* SHARED */
+  .section-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .action-btn {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, var(--accent3), var(--accent));
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-family: 'Cairo', Arial, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: var(--glow);
+    transition: filter 0.2s;
+  }
+
+  .action-btn:hover { filter: brightness(1.15); }
+
+  .clear-btn {
+    padding: 10px 16px;
+    background: var(--panel);
+    border: 1px solid var(--accent2);
+    border-radius: 10px;
+    color: var(--accent2);
+    font-family: 'Cairo', Arial, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .clear-btn:hover { background: var(--accent2); color: white; }
+
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--panel); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 </style>
 </head>
 <body>
 
-<h1>🧮 آلة حاسبة متقدمة</h1>
-
-<div class="tabs">
-  <button class="tab active" onclick="switchTab('calc', event)">الحاسبة</button>
-  <button class="tab" onclick="switchTab('graph', event)">الرسوم البيانية</button>
+<div class="header">
+  <h1>🧮 حاسبة متقدمة</h1>
+  <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
 </div>
 
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('calc',event)">الحاسبة</button>
+  <button class="tab" onclick="switchTab('history',event)">السجل</button>
+  <button class="tab" onclick="switchTab('graph',event)">الرسوم</button>
+  <button class="tab" onclick="switchTab('stats',event)">إحصاء</button>
+  <button class="tab" onclick="switchTab('converter',event)">وحدات</button>
+  <button class="tab" onclick="switchTab('currency',event)">عملات</button>
+  <button class="tab" onclick="switchTab('matrix',event)">مصفوفات</button>
+</div>
+
+<!-- ===== CALCULATOR ===== -->
 <div class="section active" id="calc">
   <div class="calc-wrapper">
     <div class="display">
@@ -324,63 +721,239 @@
   </div>
 </div>
 
-<div class="section" id="graph">
-  <div class="graph-wrapper">
-    <div class="graph-controls">
-      <div style="display:flex;flex-direction:column;gap:6px;flex:1;min-width:200px">
-        <label>أدخل الدالة f(x) =</label>
-        <input class="graph-input" id="funcInput" type="text" value="sin(x)" dir="ltr"/>
-      </div>
-      <div class="range-controls">
-        <div style="display:flex;flex-direction:column;gap:6px;align-items:center">
-          <label>من</label>
-          <input class="range-input" id="xMin" type="number" value="-10"/>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:6px;align-items:center">
-          <label>إلى</label>
-          <input class="range-input" id="xMax" type="number" value="10"/>
-        </div>
-        <button class="graph-btn" onclick="drawGraph()">📊 ارسم</button>
-      </div>
+<!-- ===== HISTORY ===== -->
+<div class="section" id="history-tab">
+  <div class="calc-wrapper" style="padding:16px;">
+    <div class="section-title">📋 سجل العمليات</div>
+    <div style="display:flex;gap:8px;margin-bottom:12px;">
+      <button class="clear-btn" onclick="clearHistory()">🗑️ مسح السجل</button>
     </div>
-    <div class="canvas-wrap">
-      <canvas id="myChart" height="350"></canvas>
-    </div>
-    <div class="error-msg" id="graphError"></div>
-    <div class="presets">
-      <span style="color:var(--text-dim);font-size:0.85rem;align-self:center">أمثلة:</span>
-      <button class="preset-btn" onclick="setPreset('sin(x)')">sin(x)</button>
-      <button class="preset-btn" onclick="setPreset('cos(x)')">cos(x)</button>
-      <button class="preset-btn" onclick="setPreset('x*x')">x²</button>
-      <button class="preset-btn" onclick="setPreset('x*x*x')">x³</button>
-      <button class="preset-btn" onclick="setPreset('Math.sqrt(Math.abs(x))')">√|x|</button>
-      <button class="preset-btn" onclick="setPreset('Math.log(Math.abs(x)+1)')">ln(|x|+1)</button>
-      <button class="preset-btn" onclick="setPreset('1/x')">1/x</button>
-      <button class="preset-btn" onclick="setPreset('Math.tan(x)')">tan(x)</button>
-      <button class="preset-btn" onclick="setPreset('Math.exp(-x*x/2)')">e^(-x²/2)</button>
+    <div class="history-list" id="historyList">
+      <div style="text-align:center;color:var(--text-dim);padding:30px;">لا توجد عمليات بعد</div>
     </div>
   </div>
 </div>
 
+<!-- ===== GRAPH ===== -->
+<div class="section" id="graph">
+  <div class="graph-wrapper">
+    <div class="section-title">📊 الرسوم البيانية</div>
+    <div class="graph-functions" id="funcList">
+      <div class="func-row" id="func-row-0">
+        <div class="func-color" style="background:#00e5ff;"></div>
+        <input class="graph-input" value="sin(x)" dir="ltr" placeholder="f(x)"/>
+        <button class="remove-func-btn" onclick="removeFunc(0)" style="visibility:hidden;">×</button>
+      </div>
+    </div>
+    <button class="add-func-btn" onclick="addFunc()">+ إضافة دالة</button>
+
+    <div class="graph-controls" style="margin-top:12px;">
+      <div class="range-controls">
+        <label>من</label>
+        <input class="range-input" id="xMin" type="number" value="-10"/>
+        <label>إلى</label>
+        <input class="range-input" id="xMax" type="number" value="10"/>
+      </div>
+      <button class="graph-btn" onclick="drawGraph()">📊 ارسم</button>
+      <button class="export-btn" onclick="exportGraph()">💾 حفظ صورة</button>
+    </div>
+
+    <div class="canvas-wrap">
+      <canvas id="myChart" height="320"></canvas>
+    </div>
+    <div class="error-msg" id="graphError"></div>
+
+    <div style="margin-top:10px;">
+      <span style="color:var(--text-dim);font-size:0.82rem;">أمثلة: </span>
+      <div class="presets" style="margin-top:6px;">
+        <button class="preset-btn" onclick="setPreset('sin(x)')">sin(x)</button>
+        <button class="preset-btn" onclick="setPreset('cos(x)')">cos(x)</button>
+        <button class="preset-btn" onclick="setPreset('x*x')">x²</button>
+        <button class="preset-btn" onclick="setPreset('x*x*x')">x³</button>
+        <button class="preset-btn" onclick="setPreset('Math.sqrt(Math.abs(x))')">√|x|</button>
+        <button class="preset-btn" onclick="setPreset('1/x')">1/x</button>
+        <button class="preset-btn" onclick="setPreset('Math.tan(x)')">tan(x)</button>
+        <button class="preset-btn" onclick="setPreset('Math.exp(-x*x/2)')">e^(-x²/2)</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== STATISTICS ===== -->
+<div class="section" id="stats">
+  <div class="stat-wrapper">
+    <div class="section-title">📈 حاسبة الإحصاء</div>
+    <label>أدخل الأرقام مفصولة بفاصلة:</label>
+    <input class="stat-input" id="statInput" type="text" placeholder="مثال: 5, 10, 15, 20, 25" dir="ltr" style="margin-top:8px;"/>
+    <div style="display:flex;gap:8px;">
+      <button class="action-btn" onclick="calcStats()">احسب</button>
+      <button class="clear-btn" onclick="document.getElementById('statInput').value='';clearStatCards()">مسح</button>
+    </div>
+    <div class="stat-grid" id="statGrid" style="display:none;">
+      <div class="stat-card"><div class="stat-label">المتوسط الحسابي</div><div class="stat-value" id="s-mean">-</div></div>
+      <div class="stat-card"><div class="stat-label">الوسيط</div><div class="stat-value" id="s-median">-</div></div>
+      <div class="stat-card"><div class="stat-label">المنوال</div><div class="stat-value" id="s-mode">-</div></div>
+      <div class="stat-card"><div class="stat-label">المدى</div><div class="stat-value" id="s-range">-</div></div>
+      <div class="stat-card"><div class="stat-label">الانحراف المعياري</div><div class="stat-value" id="s-std">-</div></div>
+      <div class="stat-card"><div class="stat-label">التباين</div><div class="stat-value" id="s-var">-</div></div>
+      <div class="stat-card"><div class="stat-label">المجموع</div><div class="stat-value" id="s-sum">-</div></div>
+      <div class="stat-card"><div class="stat-label">العدد</div><div class="stat-value" id="s-count">-</div></div>
+      <div class="stat-card"><div class="stat-label">الأكبر</div><div class="stat-value" id="s-max">-</div></div>
+      <div class="stat-card"><div class="stat-label">الأصغر</div><div class="stat-value" id="s-min">-</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== UNIT CONVERTER ===== -->
+<div class="section" id="converter">
+  <div class="converter-wrapper">
+    <div class="section-title">🔄 محول الوحدات</div>
+    <div class="converter-tabs">
+      <button class="conv-tab active" onclick="switchConv('length',this)">📏 طول</button>
+      <button class="conv-tab" onclick="switchConv('weight',this)">⚖️ وزن</button>
+      <button class="conv-tab" onclick="switchConv('temp',this)">🌡️ حرارة</button>
+      <button class="conv-tab" onclick="switchConv('area',this)">📐 مساحة</button>
+      <button class="conv-tab" onclick="switchConv('speed',this)">💨 سرعة</button>
+      <button class="conv-tab" onclick="switchConv('data',this)">💾 بيانات</button>
+    </div>
+    <div class="conv-row">
+      <input class="conv-input" id="convFrom" type="number" value="1" oninput="convert()" dir="ltr"/>
+      <select class="conv-select" id="convUnit1" onchange="convert()"></select>
+    </div>
+    <div style="text-align:center;color:var(--accent);font-size:1.5rem;margin:6px 0;">⇅</div>
+    <div class="conv-row">
+      <input class="conv-input" id="convTo" type="number" dir="ltr" readonly style="opacity:0.7;"/>
+      <select class="conv-select" id="convUnit2" onchange="convert()"></select>
+    </div>
+    <div class="conv-result">
+      <div class="conv-result-value" id="convResult">-</div>
+      <div class="conv-result-label" id="convResultLabel">اختر الوحدات وأدخل القيمة</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CURRENCY ===== -->
+<div class="section" id="currency">
+  <div class="currency-wrapper">
+    <div class="section-title">💱 محول العملات</div>
+    <div class="currency-note">⚠️ الأسعار تقريبية ثابتة - للحصول على أسعار حية يلزم الإنترنت</div>
+    <div class="conv-row">
+      <input class="conv-input" id="currFrom" type="number" value="1" oninput="convertCurrency()" dir="ltr"/>
+      <select class="conv-select" id="currUnit1" onchange="convertCurrency()">
+        <option value="USD">🇺🇸 دولار أمريكي</option>
+        <option value="SAR">🇸🇦 ريال سعودي</option>
+        <option value="EUR">🇪🇺 يورو</option>
+        <option value="GBP">🇬🇧 جنيه إسترليني</option>
+        <option value="AED">🇦🇪 درهم إماراتي</option>
+        <option value="KWD">🇰🇼 دينار كويتي</option>
+        <option value="EGP">🇪🇬 جنيه مصري</option>
+        <option value="TRY">🇹🇷 ليرة تركية</option>
+        <option value="JPY">🇯🇵 ين ياباني</option>
+        <option value="CNY">🇨🇳 يوان صيني</option>
+      </select>
+    </div>
+    <div style="text-align:center;color:var(--accent);font-size:1.5rem;margin:6px 0;">⇅</div>
+    <div class="conv-row">
+      <input class="conv-input" id="currTo" type="number" dir="ltr" readonly style="opacity:0.7;"/>
+      <select class="conv-select" id="currUnit2" onchange="convertCurrency()">
+        <option value="USD">🇺🇸 دولار أمريكي</option>
+        <option value="SAR" selected>🇸🇦 ريال سعودي</option>
+        <option value="EUR">🇪🇺 يورو</option>
+        <option value="GBP">🇬🇧 جنيه إسترليني</option>
+        <option value="AED">🇦🇪 درهم إماراتي</option>
+        <option value="KWD">🇰🇼 دينار كويتي</option>
+        <option value="EGP">🇪🇬 جنيه مصري</option>
+        <option value="TRY">🇹🇷 ليرة تركية</option>
+        <option value="JPY">🇯🇵 ين ياباني</option>
+        <option value="CNY">🇨🇳 يوان صيني</option>
+      </select>
+    </div>
+    <div class="conv-result">
+      <div class="conv-result-value" id="currResult">-</div>
+      <div class="conv-result-label" id="currLabel">أدخل القيمة</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MATRIX ===== -->
+<div class="section" id="matrix">
+  <div class="matrix-wrapper">
+    <div class="section-title">🔢 حاسبة المصفوفات</div>
+    <div class="matrix-size">
+      <label>الصفوف:</label>
+      <input class="size-input" id="matRows" type="number" value="2" min="1" max="5" onchange="buildMatrix()"/>
+      <label>الأعمدة:</label>
+      <input class="size-input" id="matCols" type="number" value="2" min="1" max="5" onchange="buildMatrix()"/>
+      <button class="action-btn" onclick="buildMatrix()">بناء</button>
+    </div>
+
+    <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:14px;">
+      <div>
+        <div style="color:var(--text-dim);font-size:0.82rem;margin-bottom:6px;">المصفوفة A</div>
+        <div class="matrix-grid" id="matA"></div>
+      </div>
+      <div id="matBContainer">
+        <div style="color:var(--text-dim);font-size:0.82rem;margin-bottom:6px;">المصفوفة B</div>
+        <div class="matrix-grid" id="matB"></div>
+      </div>
+    </div>
+
+    <div class="matrix-ops">
+      <button class="matrix-btn" onclick="matOp('add')">A + B</button>
+      <button class="matrix-btn" onclick="matOp('sub')">A − B</button>
+      <button class="matrix-btn" onclick="matOp('mul')">A × B</button>
+      <button class="matrix-btn" onclick="matOp('det')">det(A)</button>
+      <button class="matrix-btn" onclick="matOp('trans')">Aᵀ</button>
+      <button class="matrix-btn" onclick="matOp('scalar')">k × A</button>
+    </div>
+
+    <div id="scalarInput" style="display:none;margin-bottom:10px;">
+      <input class="conv-input" id="scalarVal" type="number" value="2" placeholder="أدخل الثابت k" dir="ltr" style="width:150px;"/>
+    </div>
+
+    <div style="color:var(--text-dim);font-size:0.82rem;margin-bottom:6px;">النتيجة:</div>
+    <div class="matrix-result" id="matResult">اختر عملية للبدء</div>
+  </div>
+</div>
+
 <script>
-// تسجيل Service Worker
+// ===== SERVICE WORKER =====
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js')
-      .then(r => console.log('✅ SW مسجّل'))
-      .catch(e => console.log('❌ SW فشل:', e));
+    navigator.serviceWorker.register('./sw.js').catch(()=>{});
   });
+}
+
+// ===== THEME =====
+let isDark = true;
+function toggleTheme() {
+  isDark = !isDark;
+  document.body.classList.toggle('light-mode', !isDark);
+  document.getElementById('themeBtn').textContent = isDark ? '🌙' : '☀️';
+}
+
+// ===== TABS =====
+function switchTab(tab, event) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  const el = tab === 'history' ? document.getElementById('history-tab') : document.getElementById(tab);
+  if(el) el.classList.add('active');
+  if(event && event.target) event.target.classList.add('active');
+  if(tab === 'graph' && !chartInstance) setTimeout(drawGraph, 100);
+  if(tab === 'converter') initConverter();
+  if(tab === 'matrix') buildMatrix();
+  if(tab === 'currency') convertCurrency();
 }
 
 // ===== CALCULATOR =====
 let expr = '';
-let lastResult = null;
 let justCalc = false;
+let calcHistory = [];
 
 function updateDisplay(val) {
   const d = document.getElementById('display');
   d.textContent = val || '0';
-  d.style.fontSize = val.length > 12 ? '1.5rem' : val.length > 8 ? '1.9rem' : '2.4rem';
+  d.style.fontSize = val.length > 14 ? '1.3rem' : val.length > 10 ? '1.7rem' : '2.2rem';
 }
 
 function calcFn(val) {
@@ -395,185 +968,381 @@ function calcFn(val) {
 
   expr += val;
   let display = expr
-    .replace(/Math\.PI/g, 'π')
-    .replace(/Math\.E/g, 'e')
-    .replace(/Math\.sqrt/g, '√')
-    .replace(/Math\.abs/g, 'abs')
-    .replace(/\*\*/g, '^')
-    .replace(/\*/g, '×')
-    .replace(/\//g, '÷');
+    .replace(/Math\.PI/g,'π').replace(/Math\.E/g,'e')
+    .replace(/Math\.sqrt/g,'√').replace(/Math\.abs/g,'abs')
+    .replace(/\*\*/g,'^').replace(/\*/g,'×').replace(/\//g,'÷');
   updateDisplay(display);
 }
 
-function clearAll() {
-  expr = '';
-  document.getElementById('history').textContent = '';
-  updateDisplay('0');
-  justCalc = false;
-}
-
-function clearEntry() {
-  expr = '';
-  updateDisplay('0');
-}
-
+function clearAll() { expr=''; document.getElementById('history').textContent=''; updateDisplay('0'); justCalc=false; }
+function clearEntry() { expr=''; updateDisplay('0'); }
 function backspace() {
-  expr = expr.slice(0, -1);
-  let display = expr
-    .replace(/Math\.PI/g,'π')
-    .replace(/Math\.E/g,'e')
-    .replace(/\*\*/g,'^')
-    .replace(/\*/g,'×')
-    .replace(/\//g,'÷');
-  updateDisplay(display || '0');
+  expr=expr.slice(0,-1);
+  let d=expr.replace(/Math\.PI/g,'π').replace(/Math\.E/g,'e').replace(/\*\*/g,'^').replace(/\*/g,'×').replace(/\//g,'÷');
+  updateDisplay(d||'0');
 }
-
-function toggleSign() {
-  if (expr) { expr = '-(' + expr + ')'; calcFn(''); }
-}
+function toggleSign() { if(expr){expr='-(' +expr+')'; calcFn('');} }
 
 function calculate() {
-  if (!expr) return;
+  if(!expr) return;
   try {
-    let evalExpr = expr
-      .replace(/sin\(/g, 'Math.sin(')
-      .replace(/cos\(/g, 'Math.cos(')
-      .replace(/tan\(/g, 'Math.tan(')
-      .replace(/log\(/g, 'Math.log10(')
-      .replace(/ln\(/g, 'Math.log(')
-      .replace(/sqrt\(/g, 'Math.sqrt(')
-      .replace(/abs\(/g, 'Math.abs(')
-      .replace(/π/g, 'Math.PI');
-
-    const opens = (evalExpr.match(/\(/g) || []).length;
-    const closes = (evalExpr.match(/\)/g) || []).length;
-    evalExpr += ')'.repeat(Math.max(0, opens - closes));
-
-    const result = Function('"use strict"; return (' + evalExpr + ')')();
-    if (!isFinite(result)) throw new Error('غير معرّف');
-
-    const rounded = Math.round(result * 1e10) / 1e10;
-    document.getElementById('history').textContent =
-      expr.replace(/\*/g,'×').replace(/\//g,'÷').replace(/\*\*/g,'^')
-          .replace(/Math\.PI/g,'π').replace(/Math\.E/g,'e') + ' =';
-
-    expr = String(rounded);
+    let e=expr
+      .replace(/sin\(/g,'Math.sin(').replace(/cos\(/g,'Math.cos(').replace(/tan\(/g,'Math.tan(')
+      .replace(/log\(/g,'Math.log10(').replace(/ln\(/g,'Math.log(')
+      .replace(/sqrt\(/g,'Math.sqrt(').replace(/abs\(/g,'Math.abs(').replace(/π/g,'Math.PI');
+    const opens=(e.match(/\(/g)||[]).length, closes=(e.match(/\)/g)||[]).length;
+    e += ')'.repeat(Math.max(0,opens-closes));
+    const result=Function('"use strict"; return ('+e+')')();
+    if(!isFinite(result)) throw new Error();
+    const rounded=Math.round(result*1e10)/1e10;
+    const histExpr=expr.replace(/\*/g,'×').replace(/\//g,'÷').replace(/\*\*/g,'^').replace(/Math\.PI/g,'π').replace(/Math\.E/g,'e');
+    document.getElementById('history').textContent=histExpr+' =';
+    addToHistory(histExpr, rounded);
+    expr=String(rounded);
     updateDisplay(rounded.toLocaleString('en'));
-    lastResult = rounded;
-    justCalc = true;
+    justCalc=true;
   } catch(e) {
     updateDisplay('خطأ');
-    setTimeout(() => { updateDisplay(expr || '0'); }, 1200);
+    setTimeout(()=>{updateDisplay(expr||'0');},1200);
   }
 }
 
 document.addEventListener('keydown', e => {
-  if (e.key >= '0' && e.key <= '9') calcFn(e.key);
-  else if (e.key === '+') calcFn('+');
-  else if (e.key === '-') calcFn('-');
-  else if (e.key === '*') calcFn('*');
-  else if (e.key === '/') { e.preventDefault(); calcFn('/'); }
-  else if (e.key === '.') calcFn('.');
-  else if (e.key === 'Enter' || e.key === '=') calculate();
-  else if (e.key === 'Backspace') backspace();
-  else if (e.key === 'Escape') clearAll();
+  if(e.key>='0'&&e.key<='9') calcFn(e.key);
+  else if(e.key==='+') calcFn('+');
+  else if(e.key==='-') calcFn('-');
+  else if(e.key==='*') calcFn('*');
+  else if(e.key==='/'){e.preventDefault();calcFn('/');}
+  else if(e.key==='.') calcFn('.');
+  else if(e.key==='Enter'||e.key==='=') calculate();
+  else if(e.key==='Backspace') backspace();
+  else if(e.key==='Escape') clearAll();
 });
+
+// ===== HISTORY =====
+function addToHistory(expr, result) {
+  calcHistory.unshift({expr, result});
+  if(calcHistory.length > 50) calcHistory.pop();
+  renderHistory();
+}
+
+function renderHistory() {
+  const list = document.getElementById('historyList');
+  if(!calcHistory.length) {
+    list.innerHTML = '<div style="text-align:center;color:var(--text-dim);padding:30px;">لا توجد عمليات بعد</div>';
+    return;
+  }
+  list.innerHTML = calcHistory.map((h,i) => `
+    <div class="history-item" onclick="useHistory(${i})">
+      <span class="history-expr">${h.expr} =</span>
+      <span class="history-result">${h.result}</span>
+    </div>
+  `).join('');
+}
+
+function useHistory(i) {
+  expr = String(calcHistory[i].result);
+  updateDisplay(expr);
+  justCalc = true;
+  switchTab('calc', {target: document.querySelector('.tab')});
+  document.querySelectorAll('.tab')[0].click();
+}
+
+function clearHistory() {
+  calcHistory = [];
+  renderHistory();
+}
 
 // ===== GRAPH =====
 let chartInstance = null;
+const funcColors = ['#00e5ff','#ff6b35','#7c3aed','#22c55e','#f59e0b'];
+let funcCount = 1;
+
+function addFunc() {
+  if(funcCount >= 5) return;
+  const row = document.createElement('div');
+  row.className = 'func-row';
+  row.id = 'func-row-'+funcCount;
+  const idx = funcCount;
+  row.innerHTML = `
+    <div class="func-color" style="background:${funcColors[idx]};"></div>
+    <input class="graph-input" value="cos(x)" dir="ltr" placeholder="f(x)"/>
+    <button class="remove-func-btn" onclick="removeFunc(${idx})">×</button>
+  `;
+  document.getElementById('funcList').appendChild(row);
+  funcCount++;
+  document.querySelector('#func-row-0 .remove-func-btn').style.visibility='visible';
+}
+
+function removeFunc(idx) {
+  const row = document.getElementById('func-row-'+idx);
+  if(row) row.remove();
+  if(document.querySelectorAll('.func-row').length === 1) {
+    document.querySelector('.func-row .remove-func-btn').style.visibility='hidden';
+  }
+}
 
 function setPreset(fn) {
-  document.getElementById('funcInput').value = fn;
+  const inputs = document.querySelectorAll('#funcList .graph-input');
+  if(inputs.length) inputs[0].value = fn;
   drawGraph();
 }
 
 function drawGraph() {
-  const fnStr = document.getElementById('funcInput').value.trim();
-  const xMin = parseFloat(document.getElementById('xMin').value) || -10;
-  const xMax = parseFloat(document.getElementById('xMax').value) || 10;
+  const rows = document.querySelectorAll('.func-row');
+  const xMin = parseFloat(document.getElementById('xMin').value)||(-10);
+  const xMax = parseFloat(document.getElementById('xMax').value)||10;
   const errEl = document.getElementById('graphError');
-  errEl.textContent = '';
+  errEl.textContent='';
+  if(xMin>=xMax){errEl.textContent='الحد الأدنى يجب أن يكون أصغر';return;}
+  if(typeof Chart==='undefined'){errEl.textContent='⚠️ افتح التطبيق بالنت أولاً';return;}
 
-  if (!fnStr) { errEl.textContent = 'الرجاء إدخال دالة رياضية'; return; }
-  if (xMin >= xMax) { errEl.textContent = 'الحد الأدنى يجب أن يكون أصغر من الأقصى'; return; }
+  const steps=500, dx=(xMax-xMin)/steps;
+  const labels=[];
+  for(let i=0;i<=steps;i++) labels.push(Math.round((xMin+i*dx)*100)/100);
 
-  const steps = 500;
-  const dx = (xMax - xMin) / steps;
-  const labels = [], data = [];
+  const datasets = [];
+  rows.forEach((row,ri) => {
+    const fnStr = row.querySelector('.graph-input').value.trim();
+    const color = funcColors[ri] || '#00e5ff';
+    if(!fnStr) return;
+    const data=[];
+    for(let i=0;i<=steps;i++){
+      const x=xMin+i*dx;
+      try{const y=Function('"use strict"; const x='+x+'; return '+fnStr)();data.push(isFinite(y)?Math.round(y*1e8)/1e8:null);}
+      catch{data.push(null);}
+    }
+    datasets.push({
+      label:'f(x) = '+fnStr, data,
+      borderColor:color, backgroundColor:color.replace(')',',0.05)').replace('rgb','rgba'),
+      borderWidth:2.5, pointRadius:0, tension:0.1, fill:false, spanGaps:false,
+    });
+  });
 
-  for (let i = 0; i <= steps; i++) {
-    const x = xMin + i * dx;
-    labels.push(Math.round(x * 100) / 100);
-    try {
-      const y = Function('"use strict"; const x=' + x + '; return ' + fnStr)();
-      data.push(isFinite(y) ? Math.round(y * 1e8) / 1e8 : null);
-    } catch { data.push(null); }
-  }
-
-  if (typeof Chart === 'undefined') {
-    errEl.textContent = '⚠️ افتح التطبيق مرة بالنت أولاً لتحميل مكتبة الرسوم';
-    return;
-  }
-
-  const ctx = document.getElementById('myChart').getContext('2d');
-  if (chartInstance) chartInstance.destroy();
-
-  chartInstance = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [{
-        label: 'f(x) = ' + fnStr,
-        data,
-        borderColor: '#00e5ff',
-        backgroundColor: 'rgba(0,229,255,0.05)',
-        borderWidth: 2.5,
-        pointRadius: 0,
-        tension: 0.1,
-        fill: true,
-        spanGaps: false,
-      }]
-    },
-    options: {
-      responsive: true,
-      animation: { duration: 600 },
-      plugins: {
-        legend: { labels: { color: '#e8e8f0', font: { family: 'Cairo', size: 13 } } },
-        tooltip: {
-          backgroundColor: '#16161f',
-          borderColor: '#2a2a3a',
-          borderWidth: 1,
-          titleColor: '#00e5ff',
-          bodyColor: '#e8e8f0',
-          callbacks: {
-            title: items => 'x = ' + items[0].label,
-            label: item => 'y = ' + item.raw
-          }
-        }
+  const ctx=document.getElementById('myChart').getContext('2d');
+  if(chartInstance) chartInstance.destroy();
+  chartInstance=new Chart(ctx,{
+    type:'line', data:{labels,datasets},
+    options:{
+      responsive:true, animation:{duration:500},
+      plugins:{
+        legend:{labels:{color:'#e8e8f0',font:{family:'Cairo',size:12}}},
+        tooltip:{backgroundColor:'#16161f',borderColor:'#2a2a3a',borderWidth:1,titleColor:'#00e5ff',bodyColor:'#e8e8f0',
+          callbacks:{title:i=>'x = '+i[0].label,label:i=>'y = '+i.raw}}
       },
-      scales: {
-        x: {
-          ticks: { color: '#6b6b8a', maxTicksLimit: 10, font: { family: 'Share Tech Mono', size: 11 } },
-          grid: { color: 'rgba(42,42,58,0.8)' }
-        },
-        y: {
-          ticks: { color: '#6b6b8a', maxTicksLimit: 8, font: { family: 'Share Tech Mono', size: 11 } },
-          grid: { color: 'rgba(42,42,58,0.8)' }
-        }
+      scales:{
+        x:{ticks:{color:'#6b6b8a',maxTicksLimit:10},grid:{color:'rgba(42,42,58,0.8)'}},
+        y:{ticks:{color:'#6b6b8a',maxTicksLimit:8},grid:{color:'rgba(42,42,58,0.8)'}}
       }
     }
   });
 }
 
-function switchTab(tab, event) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.getElementById(tab).classList.add('active');
-  if (event && event.target) event.target.classList.add('active');
-  if (tab === 'graph' && !chartInstance) drawGraph();
+function exportGraph() {
+  const canvas=document.getElementById('myChart');
+  const link=document.createElement('a');
+  link.download='graph.png';
+  link.href=canvas.toDataURL();
+  link.click();
 }
 
-setTimeout(drawGraph, 300);
+// ===== STATISTICS =====
+function calcStats() {
+  const raw = document.getElementById('statInput').value;
+  const nums = raw.split(',').map(n=>parseFloat(n.trim())).filter(n=>!isNaN(n));
+  if(!nums.length){alert('أدخل أرقاماً صحيحة');return;}
+
+  const sorted=[...nums].sort((a,b)=>a-b);
+  const n=nums.length;
+  const sum=nums.reduce((a,b)=>a+b,0);
+  const mean=sum/n;
+  const median=n%2===0?(sorted[n/2-1]+sorted[n/2])/2:sorted[Math.floor(n/2)];
+  const variance=nums.reduce((a,b)=>a+Math.pow(b-mean,2),0)/n;
+  const std=Math.sqrt(variance);
+  const range=sorted[n-1]-sorted[0];
+
+  const freq={};
+  nums.forEach(n=>{freq[n]=(freq[n]||0)+1;});
+  const maxFreq=Math.max(...Object.values(freq));
+  const mode=Object.keys(freq).filter(k=>freq[k]===maxFreq).join(', ');
+
+  const r=v=>Math.round(v*10000)/10000;
+  document.getElementById('s-mean').textContent=r(mean);
+  document.getElementById('s-median').textContent=r(median);
+  document.getElementById('s-mode').textContent=mode;
+  document.getElementById('s-range').textContent=r(range);
+  document.getElementById('s-std').textContent=r(std);
+  document.getElementById('s-var').textContent=r(variance);
+  document.getElementById('s-sum').textContent=r(sum);
+  document.getElementById('s-count').textContent=n;
+  document.getElementById('s-max').textContent=sorted[n-1];
+  document.getElementById('s-min').textContent=sorted[0];
+  document.getElementById('statGrid').style.display='grid';
+}
+
+function clearStatCards() {
+  document.getElementById('statGrid').style.display='none';
+}
+
+// ===== UNIT CONVERTER =====
+const unitData = {
+  length: {
+    units:['متر','كيلومتر','سنتيمتر','مليمتر','ميل','ياردة','قدم','بوصة'],
+    toBase:[1,1000,0.01,0.001,1609.344,0.9144,0.3048,0.0254]
+  },
+  weight: {
+    units:['كيلوغرام','غرام','مليغرام','طن','رطل','أونصة'],
+    toBase:[1,0.001,0.000001,1000,0.453592,0.0283495]
+  },
+  temp: {
+    units:['مئوية','فهرنهايت','كلفن'],
+    toBase:null
+  },
+  area: {
+    units:['متر مربع','كيلومتر مربع','هكتار','فدان','قدم مربع','بوصة مربعة'],
+    toBase:[1,1e6,10000,4046.86,0.092903,0.00064516]
+  },
+  speed: {
+    units:['متر/ثانية','كيلومتر/ساعة','ميل/ساعة','عقدة'],
+    toBase:[1,0.277778,0.44704,0.514444]
+  },
+  data: {
+    units:['بايت','كيلوبايت','ميغابايت','غيغابايت','تيرابايت'],
+    toBase:[1,1024,1048576,1073741824,1099511627776]
+  }
+};
+
+let currentConvType='length';
+
+function initConverter() {
+  switchConv(currentConvType, document.querySelector('.conv-tab.active'));
+}
+
+function switchConv(type, el) {
+  document.querySelectorAll('.conv-tab').forEach(t=>t.classList.remove('active'));
+  if(el) el.classList.add('active');
+  currentConvType=type;
+  const data=unitData[type];
+  const s1=document.getElementById('convUnit1'), s2=document.getElementById('convUnit2');
+  s1.innerHTML=s2.innerHTML=data.units.map((u,i)=>`<option value="${i}">${u}</option>`).join('');
+  s2.selectedIndex=1;
+  convert();
+}
+
+function convert() {
+  const type=currentConvType;
+  const data=unitData[type];
+  const val=parseFloat(document.getElementById('convFrom').value)||0;
+  const u1=parseInt(document.getElementById('convUnit1').value);
+  const u2=parseInt(document.getElementById('convUnit2').value);
+
+  let result;
+  if(type==='temp') {
+    let celsius;
+    if(u1===0) celsius=val;
+    else if(u1===1) celsius=(val-32)*5/9;
+    else celsius=val-273.15;
+    if(u2===0) result=celsius;
+    else if(u2===1) result=celsius*9/5+32;
+    else result=celsius+273.15;
+  } else {
+    const base=val*data.toBase[u1];
+    result=base/data.toBase[u2];
+  }
+
+  result=Math.round(result*1e8)/1e8;
+  document.getElementById('convTo').value=result;
+  document.getElementById('convResult').textContent=result.toLocaleString('en');
+  document.getElementById('convResultLabel').textContent=`${val} ${data.units[u1]} = ${result} ${data.units[u2]}`;
+}
+
+// ===== CURRENCY =====
+const rates={USD:1,SAR:3.75,EUR:0.92,GBP:0.79,AED:3.67,KWD:0.31,EGP:30.9,TRY:32.1,JPY:149.5,CNY:7.24};
+
+function convertCurrency() {
+  const val=parseFloat(document.getElementById('currFrom').value)||0;
+  const from=document.getElementById('currUnit1').value;
+  const to=document.getElementById('currUnit2').value;
+  const result=Math.round((val/rates[from]*rates[to])*100)/100;
+  document.getElementById('currTo').value=result;
+  document.getElementById('currResult').textContent=result.toLocaleString('en');
+  document.getElementById('currLabel').textContent=`${val} ${from} = ${result} ${to}`;
+}
+
+// ===== MATRIX =====
+function buildMatrix() {
+  const r=parseInt(document.getElementById('matRows').value)||2;
+  const c=parseInt(document.getElementById('matCols').value)||2;
+  ['matA','matB'].forEach(id=>{
+    const g=document.getElementById(id);
+    g.style.gridTemplateColumns=`repeat(${c},55px)`;
+    g.innerHTML='';
+    for(let i=0;i<r;i++) for(let j=0;j<c;j++) {
+      const inp=document.createElement('input');
+      inp.className='matrix-cell';
+      inp.type='number';inp.value='0';
+      g.appendChild(inp);
+    }
+  });
+}
+
+function getMatrix(id) {
+  const r=parseInt(document.getElementById('matRows').value)||2;
+  const c=parseInt(document.getElementById('matCols').value)||2;
+  const cells=document.getElementById(id).querySelectorAll('.matrix-cell');
+  const m=[];
+  for(let i=0;i<r;i++){m.push([]);for(let j=0;j<c;j++) m[i].push(parseFloat(cells[i*c+j].value)||0);}
+  return m;
+}
+
+function matOp(op) {
+  const r=parseInt(document.getElementById('matRows').value)||2;
+  const c=parseInt(document.getElementById('matCols').value)||2;
+  const A=getMatrix('matA'), B=getMatrix('matB');
+  let result='';
+
+  const fmt=m=>m.map(row=>row.map(v=>String(Math.round(v*1000)/1000).padStart(8)).join('')).join('\n');
+
+  if(op==='add') {
+    const R=A.map((row,i)=>row.map((v,j)=>v+B[i][j]));
+    result='A + B =\n'+fmt(R);
+  } else if(op==='sub') {
+    const R=A.map((row,i)=>row.map((v,j)=>v-B[i][j]));
+    result='A - B =\n'+fmt(R);
+  } else if(op==='mul') {
+    if(c!==r){result='خطأ: عدد أعمدة A يجب = عدد صفوف B';} 
+    else {
+      const R=Array.from({length:r},(_,i)=>Array.from({length:c},(_,j)=>A[i].reduce((s,_,k)=>s+A[i][k]*B[k][j],0)));
+      result='A × B =\n'+fmt(R);
+    }
+  } else if(op==='det') {
+    if(r!==c){result='المحدد يحتاج مصفوفة مربعة';}
+    else {result='det(A) = '+Math.round(det(A)*10000)/10000;}
+  } else if(op==='trans') {
+    const R=Array.from({length:c},(_,j)=>Array.from({length:r},(_,i)=>A[i][j]));
+    result='Aᵀ =\n'+fmt(R);
+  } else if(op==='scalar') {
+    const k=parseFloat(document.getElementById('scalarVal').value)||1;
+    const R=A.map(row=>row.map(v=>v*k));
+    result=`${k} × A =\n`+fmt(R);
+    document.getElementById('scalarInput').style.display='block';
+  }
+
+  if(op!=='scalar') document.getElementById('scalarInput').style.display='none';
+  document.getElementById('matResult').textContent=result;
+}
+
+function det(m) {
+  const n=m.length;
+  if(n===1) return m[0][0];
+  if(n===2) return m[0][0]*m[1][1]-m[0][1]*m[1][0];
+  return m[0].reduce((s,v,j)=>s+v*Math.pow(-1,j)*det(m.slice(1).map(r=>r.filter((_,c)=>c!==j))),0);
+}
+
+// Init
+buildMatrix();
+initConverter();
+convertCurrency();
 </script>
 </body>
 </html>

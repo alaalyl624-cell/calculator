@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>آلة حاسبة متقدمة</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#00e5ff">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Share+Tech+Mono&display=swap');
@@ -19,7 +22,6 @@
     --text: #e8e8f0;
     --text-dim: #6b6b8a;
     --glow: 0 0 20px rgba(0,229,255,0.3);
-    --glow2: 0 0 20px rgba(255,107,53,0.3);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -27,13 +29,13 @@
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'Cairo', sans-serif;
+    font-family: 'Cairo', Arial, sans-serif;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    background-image: 
+    background-image:
       radial-gradient(ellipse at 20% 20%, rgba(124,58,237,0.08) 0%, transparent 50%),
       radial-gradient(ellipse at 80% 80%, rgba(0,229,255,0.06) 0%, transparent 50%);
   }
@@ -65,7 +67,7 @@
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    font-family: 'Cairo', sans-serif;
+    font-family: 'Cairo', Arial, sans-serif;
     font-size: 0.95rem;
     font-weight: 600;
     transition: all 0.3s;
@@ -82,7 +84,6 @@
   .section { display: none; width: 100%; max-width: 900px; }
   .section.active { display: block; }
 
-  /* CALCULATOR */
   .calc-wrapper {
     background: var(--card);
     border: 1px solid var(--border);
@@ -96,7 +97,6 @@
     padding: 24px 20px 16px;
     text-align: left;
     border-bottom: 1px solid var(--border);
-    position: relative;
   }
 
   .display-history {
@@ -150,9 +150,7 @@
   }
 
   .btn:active::after { opacity: 0.08; }
-
   .btn:hover { background: #1e1e2e; }
-
   .btn.op { color: var(--accent); }
   .btn.fn { color: #a78bfa; font-size: 0.85rem; }
   .btn.eq {
@@ -165,12 +163,10 @@
   .btn.clear { color: var(--accent2); }
   .btn.zero { grid-column: span 2; }
 
-  /* GRAPH */
   .graph-wrapper {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 20px;
-    overflow: hidden;
     padding: 24px;
     box-shadow: 0 20px 60px rgba(0,0,0,0.5);
   }
@@ -229,7 +225,7 @@
     border: none;
     border-radius: 10px;
     color: white;
-    font-family: 'Cairo', sans-serif;
+    font-family: 'Cairo', Arial, sans-serif;
     font-size: 0.95rem;
     font-weight: 700;
     cursor: pointer;
@@ -241,7 +237,6 @@
   .graph-btn:hover { filter: brightness(1.15); }
 
   .canvas-wrap {
-    position: relative;
     background: var(--panel);
     border-radius: 14px;
     border: 1px solid var(--border);
@@ -269,10 +264,7 @@
     transition: all 0.2s;
   }
 
-  .preset-btn:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
+  .preset-btn:hover { border-color: var(--accent); color: var(--accent); }
 
   label { color: var(--text-dim); font-size: 0.85rem; }
   .error-msg { color: var(--accent2); font-size: 0.85rem; margin-top: 8px; min-height: 20px; }
@@ -283,11 +275,10 @@
 <h1>🧮 آلة حاسبة متقدمة</h1>
 
 <div class="tabs">
-  <button class="tab active" onclick="switchTab('calc')">الحاسبة</button>
-  <button class="tab" onclick="switchTab('graph')">الرسوم البيانية</button>
+  <button class="tab active" onclick="switchTab('calc', event)">الحاسبة</button>
+  <button class="tab" onclick="switchTab('graph', event)">الرسوم البيانية</button>
 </div>
 
-<!-- CALCULATOR TAB -->
 <div class="section active" id="calc">
   <div class="calc-wrapper">
     <div class="display">
@@ -295,43 +286,36 @@
       <div class="display-main" id="display">0</div>
     </div>
     <div class="buttons">
-      <!-- Row 1 -->
       <button class="btn fn" onclick="calcFn('sin(')">sin</button>
       <button class="btn fn" onclick="calcFn('cos(')">cos</button>
       <button class="btn fn" onclick="calcFn('tan(')">tan</button>
       <button class="btn fn" onclick="calcFn('log(')">log</button>
       <button class="btn fn" onclick="calcFn('ln(')">ln</button>
-      <!-- Row 2 -->
       <button class="btn fn" onclick="calcFn('sqrt(')">√</button>
       <button class="btn fn" onclick="calcFn('**')">xʸ</button>
       <button class="btn fn" onclick="calcFn('Math.PI')">π</button>
       <button class="btn fn" onclick="calcFn('Math.E')">e</button>
-      <button class="btn fn" onclick="calcFn('(')">(  )</button>
-      <!-- Row 3 -->
+      <button class="btn fn" onclick="calcFn('(')">( )</button>
       <button class="btn clear" onclick="clearAll()">AC</button>
       <button class="btn clear" onclick="clearEntry()">CE</button>
       <button class="btn clear" onclick="backspace()">⌫</button>
       <button class="btn fn" onclick="calcFn('%')">%</button>
       <button class="btn op" onclick="calcFn('/')">÷</button>
-      <!-- Row 4 -->
       <button class="btn" onclick="calcFn('7')">7</button>
       <button class="btn" onclick="calcFn('8')">8</button>
       <button class="btn" onclick="calcFn('9')">9</button>
       <button class="btn fn" onclick="calcFn('abs(')">|x|</button>
       <button class="btn op" onclick="calcFn('*')">×</button>
-      <!-- Row 5 -->
       <button class="btn" onclick="calcFn('4')">4</button>
       <button class="btn" onclick="calcFn('5')">5</button>
       <button class="btn" onclick="calcFn('6')">6</button>
       <button class="btn fn" onclick="calcFn('1/')">1/x</button>
       <button class="btn op" onclick="calcFn('-')">−</button>
-      <!-- Row 6 -->
       <button class="btn" onclick="calcFn('1')">1</button>
       <button class="btn" onclick="calcFn('2')">2</button>
       <button class="btn" onclick="calcFn('3')">3</button>
       <button class="btn fn" onclick="calcFn('**2')">x²</button>
       <button class="btn op" onclick="calcFn('+')">+</button>
-      <!-- Row 7 -->
       <button class="btn zero" onclick="calcFn('0')">0</button>
       <button class="btn" onclick="calcFn('.')">.</button>
       <button class="btn fn" onclick="toggleSign()">±</button>
@@ -340,13 +324,12 @@
   </div>
 </div>
 
-<!-- GRAPH TAB -->
 <div class="section" id="graph">
   <div class="graph-wrapper">
     <div class="graph-controls">
       <div style="display:flex;flex-direction:column;gap:6px;flex:1;min-width:200px">
         <label>أدخل الدالة f(x) =</label>
-        <input class="graph-input" id="funcInput" type="text" value="sin(x)" placeholder="مثال: x*x أو sin(x)" dir="ltr"/>
+        <input class="graph-input" id="funcInput" type="text" value="sin(x)" dir="ltr"/>
       </div>
       <div class="range-controls">
         <div style="display:flex;flex-direction:column;gap:6px;align-items:center">
@@ -380,6 +363,15 @@
 </div>
 
 <script>
+// تسجيل Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(r => console.log('✅ SW مسجّل'))
+      .catch(e => console.log('❌ SW فشل:', e));
+  });
+}
+
 // ===== CALCULATOR =====
 let expr = '';
 let lastResult = null;
@@ -394,9 +386,8 @@ function updateDisplay(val) {
 function calcFn(val) {
   if (justCalc && /[\d(]/.test(val)) { expr = ''; justCalc = false; }
   if (justCalc && /[+\-*\/]/.test(val)) { justCalc = false; }
-  
-  // Handle parentheses auto-close
-  if (val === '(  )') {
+
+  if (val === '(') {
     const opens = (expr.match(/\(/g) || []).length;
     const closes = (expr.match(/\)/g) || []).length;
     val = opens > closes ? ')' : '(';
@@ -428,7 +419,12 @@ function clearEntry() {
 
 function backspace() {
   expr = expr.slice(0, -1);
-  let display = expr.replace(/Math\.PI/g,'π').replace(/Math\.E/g,'e').replace(/\*\*/g,'^').replace(/\*/g,'×').replace(/\//g,'÷');
+  let display = expr
+    .replace(/Math\.PI/g,'π')
+    .replace(/Math\.E/g,'e')
+    .replace(/\*\*/g,'^')
+    .replace(/\*/g,'×')
+    .replace(/\//g,'÷');
   updateDisplay(display || '0');
 }
 
@@ -449,24 +445,23 @@ function calculate() {
       .replace(/abs\(/g, 'Math.abs(')
       .replace(/π/g, 'Math.PI');
 
-    // Auto close parens
     const opens = (evalExpr.match(/\(/g) || []).length;
     const closes = (evalExpr.match(/\)/g) || []).length;
     evalExpr += ')'.repeat(Math.max(0, opens - closes));
 
     const result = Function('"use strict"; return (' + evalExpr + ')')();
-    
     if (!isFinite(result)) throw new Error('غير معرّف');
-    
+
     const rounded = Math.round(result * 1e10) / 1e10;
-    document.getElementById('history').textContent = 
-      expr.replace(/\*/g,'×').replace(/\//g,'÷').replace(/\*\*/g,'^').replace(/Math\.PI/g,'π').replace(/Math\.E/g,'e') + ' =';
-    
+    document.getElementById('history').textContent =
+      expr.replace(/\*/g,'×').replace(/\//g,'÷').replace(/\*\*/g,'^')
+          .replace(/Math\.PI/g,'π').replace(/Math\.E/g,'e') + ' =';
+
     expr = String(rounded);
     updateDisplay(rounded.toLocaleString('en'));
     lastResult = rounded;
     justCalc = true;
-  } catch (e) {
+  } catch(e) {
     updateDisplay('خطأ');
     setTimeout(() => { updateDisplay(expr || '0'); }, 1200);
   }
@@ -500,7 +495,7 @@ function drawGraph() {
   errEl.textContent = '';
 
   if (!fnStr) { errEl.textContent = 'الرجاء إدخال دالة رياضية'; return; }
-  if (xMin >= xMax) { errEl.textContent = 'يجب أن يكون الحد الأدنى أصغر من الحد الأقصى'; return; }
+  if (xMin >= xMax) { errEl.textContent = 'الحد الأدنى يجب أن يكون أصغر من الأقصى'; return; }
 
   const steps = 500;
   const dx = (xMax - xMin) / steps;
@@ -513,6 +508,11 @@ function drawGraph() {
       const y = Function('"use strict"; const x=' + x + '; return ' + fnStr)();
       data.push(isFinite(y) ? Math.round(y * 1e8) / 1e8 : null);
     } catch { data.push(null); }
+  }
+
+  if (typeof Chart === 'undefined') {
+    errEl.textContent = '⚠️ افتح التطبيق مرة بالنت أولاً لتحميل مكتبة الرسوم';
+    return;
   }
 
   const ctx = document.getElementById('myChart').getContext('2d');
@@ -536,11 +536,9 @@ function drawGraph() {
     },
     options: {
       responsive: true,
-      animation: { duration: 600, easing: 'easeInOutQuart' },
+      animation: { duration: 600 },
       plugins: {
-        legend: {
-          labels: { color: '#e8e8f0', font: { family: 'Cairo', size: 13 } }
-        },
+        legend: { labels: { color: '#e8e8f0', font: { family: 'Cairo', size: 13 } } },
         tooltip: {
           backgroundColor: '#16161f',
           borderColor: '#2a2a3a',
@@ -555,37 +553,26 @@ function drawGraph() {
       },
       scales: {
         x: {
-          ticks: {
-            color: '#6b6b8a',
-            maxTicksLimit: 10,
-            font: { family: 'Share Tech Mono', size: 11 }
-          },
-          grid: { color: 'rgba(42,42,58,0.8)' },
-          border: { color: '#2a2a3a' }
+          ticks: { color: '#6b6b8a', maxTicksLimit: 10, font: { family: 'Share Tech Mono', size: 11 } },
+          grid: { color: 'rgba(42,42,58,0.8)' }
         },
         y: {
-          ticks: {
-            color: '#6b6b8a',
-            maxTicksLimit: 8,
-            font: { family: 'Share Tech Mono', size: 11 }
-          },
-          grid: { color: 'rgba(42,42,58,0.8)' },
-          border: { color: '#2a2a3a' }
+          ticks: { color: '#6b6b8a', maxTicksLimit: 8, font: { family: 'Share Tech Mono', size: 11 } },
+          grid: { color: 'rgba(42,42,58,0.8)' }
         }
       }
     }
   });
 }
 
-function switchTab(tab) {
+function switchTab(tab, event) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.getElementById(tab).classList.add('active');
-  event.target.classList.add('active');
+  if (event && event.target) event.target.classList.add('active');
   if (tab === 'graph' && !chartInstance) drawGraph();
 }
 
-// Draw initial graph
 setTimeout(drawGraph, 300);
 </script>
 </body>
